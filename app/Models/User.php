@@ -51,4 +51,5 @@ class User extends Authenticatable
     {
         return Attribute::make(set: fn($value) => Hash::make($value));
     }
+    
 }
