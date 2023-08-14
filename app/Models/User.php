@@ -51,5 +51,8 @@ class User extends Authenticatable
     {
         return Attribute::make(set: fn($value) => Hash::make($value));
     }
-    
+
+    public function role() {
+        $this->belongsTo(Role::class);
+    }
 }
