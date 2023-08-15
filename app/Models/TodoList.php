@@ -23,7 +23,7 @@ class TodoList extends Model
         });
     }
 
-    public function scopeAuthUser(Builder $query)
+    public function scopeForAuthUser(Builder $query)
     {
         $query->where('user_id', auth()->id());
     }

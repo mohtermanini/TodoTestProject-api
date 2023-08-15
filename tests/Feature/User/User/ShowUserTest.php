@@ -11,18 +11,11 @@ class ShowUserTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $alice;
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->alice = $this->createMemberUser();
-    }
-
     public function testUserCanGetHisInfo(): void
     {
         Sanctum::actingAs($this->alice);
 
-        $response = $this->get(route('users.show'));
+        $response = $this->getJson(route('users.show'));
 
         $response->assertStatus(200)
             ->assertJsonStructure([

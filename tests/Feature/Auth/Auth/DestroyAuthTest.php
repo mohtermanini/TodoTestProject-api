@@ -12,12 +12,6 @@ class DestroyAuthTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $alice;
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->alice = $this->createMemberUser();
-    }
     public function test_user_can_logout()
     {
         Sanctum::actingAs($this->alice);

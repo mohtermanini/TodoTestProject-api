@@ -10,15 +10,6 @@ class StoreAuthTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $alice;
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->alice = $this->createMemberUser();
-    }
-    /**
-     * A basic feature test example.
-     */
     public function testUserCanLogin(): void
     {
         $login_data = ['email' => $this->alice->email, 'password' => 'Password1'];

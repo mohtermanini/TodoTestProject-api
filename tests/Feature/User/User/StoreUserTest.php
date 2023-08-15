@@ -15,9 +15,9 @@ class StoreUserTest extends TestCase
     public function testUserCanRegister(): void
     {
         $register_data = [
-            'first_name' => 'alice',
+            'first_name' => 'jack',
             'last_name' => 'smith',
-            'email' => 'alice@example.com',
+            'email' => 'jack@example.com',
             'password' => 'Password1',
             'password_confirmation' => 'Password1',
         ];
@@ -56,9 +56,9 @@ class StoreUserTest extends TestCase
     public function testRolePassedWithRegisterDataIsIgnored()
     {
         $register_data = [
-            'first_name' => 'alice',
+            'first_name' => 'jack',
             'last_name' => 'smith',
-            'email' => 'alice@example.com',
+            'email' => 'jack@example.com',
             'password' => 'Password1',
             'password_confirmation' => 'Password1',
             'role_id' => RolesEnum::ADMIN->value
@@ -76,9 +76,9 @@ class StoreUserTest extends TestCase
     public function testDefaultTodoListWithOneTaskIsCreatedWhenUserRegister()
     {
         $register_data = [
-            'first_name' => 'alice',
+            'first_name' => 'jack',
             'last_name' => 'smith',
-            'email' => 'alice@example.com',
+            'email' => 'jack@example.com',
             'password' => 'Password1',
             'password_confirmation' => 'Password1',
         ];
