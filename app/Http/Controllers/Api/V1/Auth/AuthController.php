@@ -33,6 +33,7 @@ class AuthController extends Controller
     public function destroy()
     {
         auth()->user()->currentAccessToken()->delete();
+
         return $this->responseDeleted();
     }
 }

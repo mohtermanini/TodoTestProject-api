@@ -22,13 +22,17 @@ abstract class TestCase extends BaseTestCase
         $this->alice = $this->createMemberUser(email: 'alice@mail.com');
         $this->createTodoList($this->alice, 0);
         $alice_todolist_2 = $this->createTodoList($this->alice, 3);
-        $this->createTask($alice_todolist_2, true, Carbon::now()->subDay());
-        $this->createTask($alice_todolist_2, false, Carbon::now()->subDay());
-        $this->createTask($alice_todolist_2, true, Carbon::now()->subDays(2));
+        $this->createTask(todo_list_id: $alice_todolist_2, completed: true, due_date: Carbon::now()->subDay());
+        $this->createTask(todo_list_id: $alice_todolist_2, completed: false, due_date: Carbon::now()->subDay());
+        $this->createTask(todo_list_id: $alice_todolist_2, completed: true, due_date: Carbon::now()->subDays(2));
 
         $this->bob = $this->createMemberUser(email: 'bob@mail.com');
-        $bob_todolist_1 = $this->createTodoList($this->bob, 2);
-        $this->createTask($bob_todolist_1, true);
+        $bob_todolist_1 = $this->createTodoList($this->bob, 0);
+        $this->createTask(todo_list_id: $bob_todolist_1, completed: true);
+        $this->createTask(todo_list_id: $bob_todolist_1, title: "Example First Title1", description: "Example First Description1", completed: true);
+        $this->createTask(todo_list_id: $bob_todolist_1, title: "Example Second Title2", description: "Example Second Description2", completed: true, due_date: Carbon::now()->subDay());
+        $this->createTask(todo_list_id: $bob_todolist_1, title: "Example Third Title3", description: "Example Third Description3", completed: false, due_date: Carbon::now()->subDay());
+        $this->createTask(todo_list_id: $bob_todolist_1, title: "Example Fourth Title4", description: "Example Fourth Description4", completed: true, due_date: Carbon::now()->subDays(2));
     }
 
     protected function createMemberUser($email)
@@ -44,14 +48,17 @@ abstract class TestCase extends BaseTestCase
             ->create();
     }
 
-    protected function createTask($todo_list_id, $completed, $due_date = null)
+    protected function createTask($todo_list_id, $title = null, $description = null, $completed = null, $due_date = null)
     {
-        $task = Task::factory()
-            ->state([
-                'todo_list_id' => $todo_list_id,
-                'completed' => $completed,
-                'due_date' => $due_date ? $due_date->toDateTimeString() : Carbon::now()->toDateTimeString()
-            ]);
-        return $task->create();
+        $stateArray = ['todo_list_id' => $todo_list_id];
+        if ($title !== null)
+            $stateArray['title'] = $title;
+        if ($description !== null)
+            $stateArray['description'] = $description;
+        if ($completed !== null)
+            $stateArray['completed'] = $completed;
+        if ($due_date !== null)
+            $stateArray['due_date'] = $due_date;
+        return Task::factory()->state($stateArray)->create();
     }
 }

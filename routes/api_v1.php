@@ -1,11 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\V1\User\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\Auth\AuthController;
 use App\Http\Controllers\Api\V1\User\UserController;
 use App\Http\Controllers\Api\V1\User\TodoListController;
-use App\Http\Controllers\Api\V1\User\TodoListTasksController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,10 +45,14 @@ Route::controller(TodoListController::class)
         Route::delete('/{todolist}', 'destroy')->name('destroy');
     });
 
-Route::controller(TodoListTasksController::class)
+Route::controller(TaskController::class)
     ->prefix('todolists/{todolist}/tasks')
     ->name('todolists.tasks.')
     ->middleware(['auth:sanctum'])
     ->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::get('/{task}', 'show')->name('show');
+        Route::post('/', 'store')->name('store');
+        Route::patch('/{task}', 'update')->name('update');
+        Route::delete('/{task}', 'destroy')->name('destroy');
     });

@@ -22,7 +22,7 @@ class UpdateTodoListRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['max:255', 'unique:todo_lists,title']
+            'title' => ['required', 'max:255', 'unique:todo_lists,title']
         ];
     }
 }

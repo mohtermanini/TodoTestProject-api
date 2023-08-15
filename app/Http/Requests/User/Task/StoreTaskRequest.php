@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\User\TodoList;
+namespace App\Http\Requests\User\Task;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreTodoListRequest extends FormRequest
+class StoreTaskRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,14 @@ class StoreTodoListRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'max:255', 'unique:todo_lists,title']
+            'title' => ['required', 'max:255'],
+            'due_date' => ['required', 'date'],
+            'todo_list_id' => ['required', 'integer', 'exists:todo_lists,id']
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge(['todo_list_id' => (int) $this->todolist]);
     }
 }
