@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Role;
+use App\Models\TodoList;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
@@ -53,6 +55,10 @@ class User extends Authenticatable
     }
 
     public function role() {
-        $this->belongsTo(Role::class);
+       return $this->belongsTo(Role::class);
+    }
+
+    public function todo_lists() {
+        return $this->hasMany(TodoList::class);
     }
 }
