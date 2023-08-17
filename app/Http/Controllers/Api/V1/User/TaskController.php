@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use App\Models\Task;
 use App\Models\TodoList;
 use Illuminate\Http\Request;
+use App\Services\TodoListService;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TaskResource;
 use App\Http\Requests\User\Task\StoreTaskRequest;
@@ -13,17 +15,22 @@ use App\Http\Requests\User\Task\UpdateTaskRequest;
 
 class TaskController extends Controller
 {
-    public function __construct()
+    public function __construct(TodoListService $todoListService)
     {
-        if (TodoList::where('id', request()->todolist)->where('user_id', auth()->id())->first() === null) {
-            abort(404, "Todo list not found for current user.");
-        }
+        $this->middleware(function ($request, $next) use ($todoListService) {
+            try {
+                $todoListService->checkIfTodoListBelongsToCurrentUser(request()->todolist);
+            } catch (\Exception $e) {
+                abort(404, $e->getMessage());
+            }
+            return $next($request);
+        });
     }
     public function index($todolist_id)
     {
         $sort_col = request()->query('sort_col', 'due_date');
         $sort_order = request()->query('sort_order', 'desc');
-        $search = request()->query("search");
+        $search = request()->query('search');
         $tasks_per_page = request()->query('per_page', 10);
 
         $tasks = Task::where('todo_list_id', $todolist_id)
@@ -58,7 +65,8 @@ class TaskController extends Controller
         }
 
         return $this->responseOk([
-            'tasks' => $groupedTasks
+            'tasks' => $groupedTasks,
+            'totalPages' => $tasks->lastPage()
         ]);
     }
 
@@ -73,7 +81,7 @@ class TaskController extends Controller
     {
         $task = Task::create($storeTaskRequest->validated());
 
-        return $this->responseCreated(new TaskResource($task->fresh()));
+        return $this->responseCreated(new TaskResource($task));
     }
 
     public function update(UpdateTaskRequest $updateTaskRequest, $todolist_id, $task_id)

@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('todo_lists', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->unique();
+            $table->string('title');
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
+
+            $table->unique(['title', 'user_id']);
         });
     }
 

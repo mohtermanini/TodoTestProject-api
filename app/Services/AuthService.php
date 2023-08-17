@@ -9,7 +9,7 @@ class AuthService
 {
     public function getUserByCredentialsOrFail($email, $password)
     {
-        $user = User::where('email', $email)->first();
+        $user = User::with(['role'])->where('email', $email)->first();
         if (!$user || !Hash::check($password, $user->password)) {
             throw new \Exception("Invalid credentials");
         }

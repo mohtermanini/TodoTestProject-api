@@ -30,7 +30,7 @@ class IndexTodoListTest extends TestCase
                         '*' => [
                             'id',
                             'title',
-                            'completed_tasks'
+                            'remainingTasks'
                         ]
                     ]
                 ]

@@ -3,5 +3,5 @@
 use Illuminate\Validation\Rules\Password;
 
 return [
-    'password' => Password::min(8)->mixedCase()
+    'password' => Password::min(8)->numbers()->mixedCase()
 ];

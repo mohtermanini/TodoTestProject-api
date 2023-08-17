@@ -15,8 +15,8 @@ class TodoListController extends Controller
     public function index()
     {
         $todolists = TodoList::withCount([
-            'tasks as completed_tasks' => function ($query) {
-                return $query->where('completed', true);
+            'tasks as remaining_tasks' => function ($query) {
+                return $query->where('completed', false);
             }
         ])->forAuthUser()->get();
 
